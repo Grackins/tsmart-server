@@ -10,7 +10,7 @@ from .utils import get_client_ip
 def devman_home_view(request):
     return render(request,
             'devman/devman_index.html',
-            {'devs', SecDevice.objects.all()}
+            {'devs': SecDevice.objects.all()}
             )
 
 

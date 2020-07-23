@@ -1,0 +1,16 @@
+<html>
+  <head>
+    <title>
+      Index
+    </title>
+  </head>
+  <body>
+    {% for dev in devs %}
+    - {{ dev.id }}
+    - {{ dev.ip }}
+    - {{ dev.port }}
+    - {{ dev.status }}
+    <br />
+    {% endfor %}
+  </body>
+</html>
