@@ -20,6 +20,12 @@ def toggle_secdevice_view(request):
     return render(request, 'devman/toggle_secdevice.html', {'device': device})
 
 
+@require_http_methods(['GET'])
 def secdevice_logs_view(request):
-    pass
+    dev_id = request.GET.get('device', -1)
+    if dev_id == -1:
+        logs = SecAlarm.objects.all()
+    else:
+        logs = SecAlarm.objects.filter(device_id=dev_id).all()
+    return render(request, 'devman/secdevice_logs.html', {'logs': logs})
 
