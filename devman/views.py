@@ -8,9 +8,16 @@ from .utils import get_client_ip
 
 
 def devman_home_view(request):
-    return render(request,
+    waether_devs = WeatherDevice.objects.all()
+    for device in weather_devs:
+        device.update()
+    return render(
+            request,
             'devman/devman_index.html',
-            {'devs': SecDevice.objects.all()}
+            {
+                'sec_devs': SecDevice.objects.all(),
+                'weather_devs': weather_devs,
+                },
             )
 
 
@@ -29,7 +36,10 @@ def secdevice_logs_view(request):
         logs = SecAlarm.objects.all()
     else:
         logs = SecAlarm.objects.filter(device_id=dev_id).all()
-    return render(request, 'devman/secdevice_logs.html', {'logs': logs})
+    return render(request,
+            'devman/secdevice_logs.html',
+            {'logs': logs},
+            )
 
 
 @require_http_methods(['GET'])
@@ -44,4 +54,15 @@ def secdevice_submit_alarm_view(request):
         return HttpResponse('OK')
     except Exception:
         return HttpResponse('NOK')
+
+
+@require_http_methods(['GET'])
+def weather_device_view(request):
+    dev_id = request.GET.get('device', -1)
+    device = get_object_or_404(WeatherDevice, pk=dev_id)
+    device.update()
+    return render(request,
+            'devman/watherdevice_view.html',
+            {'device': device},
+            )
 
