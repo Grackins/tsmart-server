@@ -3,12 +3,12 @@ from django.http import HttpResponse
 from django.views.decorators.http import require_http_methods
 from datetime import datetime
 
-from .models import SecDevice, SecAlarm
+from .models import SecDevice, SecAlarm, WeatherDevice
 from .utils import get_client_ip
 
 
 def devman_home_view(request):
-    waether_devs = WeatherDevice.objects.all()
+    weather_devs = WeatherDevice.objects.all()
     for device in weather_devs:
         device.update()
     return render(
@@ -62,7 +62,7 @@ def weather_device_view(request):
     device = get_object_or_404(WeatherDevice, pk=dev_id)
     device.update()
     return render(request,
-            'devman/wather_device_view.html',
+            'devman/weather_device_view.html',
             {'device': device},
             )
 
