@@ -1,0 +1,13 @@
+<html>
+  <head>
+    <title>
+      Security logs
+    </title>
+  </head>
+  <body>
+    {% for log in logs %}
+    - {{ log.time }}
+    <br />
+    {% endfor %}
+  </body>
+</html>
