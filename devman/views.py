@@ -1,8 +1,9 @@
-from django.shortcuts import render
-from django.shortcuts import get_object_or_404
+from django.shortcuts import render, get_object_or_404
+from django.http import HttpResponse
 from django.views.decorators.http import require_http_methods
+from datetime import datetime
 
-from .models import SecDevice
+from .models import SecDevice, SecAlarm
 
 
 def devman_home_view(request):
@@ -28,4 +29,18 @@ def secdevice_logs_view(request):
     else:
         logs = SecAlarm.objects.filter(device_id=dev_id).all()
     return render(request, 'devman/secdevice_logs.html', {'logs': logs})
+
+
+@require_http_methods(['GET'])
+def secdevice_submit_alarm_view(request):
+    alarm = SecAlarm()
+    device = None
+    try:
+        device = SecDevice.objects.get(ip=get_client_ip(request))
+        alarm.device = device
+        alarm.time = datetime.now()
+        alarm.save()
+        return HttpResponse('OK')
+    except Exception:
+        return HttpResponse('NOK')
 
