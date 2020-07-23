@@ -48,11 +48,11 @@ class SecAlarm(models.Model):
 
 class WeatherDevice(Device):
     humidity = models.FloatField()
-    weather = models.FloatField()
+    temperature = models.FloatField()
 
     def update(self):
         info = self.send_message('Get').decode('utf-8').split()
         self.humidity = float(info[0])
-        self.weather = float(info[1])
+        self.temperature = float(info[1])
         self.save()
 

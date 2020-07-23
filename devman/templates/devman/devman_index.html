@@ -5,11 +5,20 @@
     </title>
   </head>
   <body>
-    {% for dev in devs %}
+    Security devices:<br />
+    {% for dev in sec_devs %}
     - {{ dev.id }}
     - {{ dev.ip }}
     - {{ dev.port }}
     - {{ dev.status }}
+    <br />
+    {% endfor %}
+    <br />
+    Weather devices:<br />
+    {% for dev in weather_devs %}
+    - {{ dev.id }}
+    - {{ dev.humidity }}
+    - {{ dev.temperature }}
     <br />
     {% endfor %}
   </body>

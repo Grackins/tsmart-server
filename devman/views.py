@@ -62,7 +62,7 @@ def weather_device_view(request):
     device = get_object_or_404(WeatherDevice, pk=dev_id)
     device.update()
     return render(request,
-            'devman/watherdevice_view.html',
+            'devman/wather_device_view.html',
             {'device': device},
             )
 
