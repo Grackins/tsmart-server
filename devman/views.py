@@ -4,6 +4,7 @@ from django.views.decorators.http import require_http_methods
 from datetime import datetime
 
 from .models import SecDevice, SecAlarm
+from .utils import get_client_ip
 
 
 def devman_home_view(request):
