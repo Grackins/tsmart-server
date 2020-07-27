@@ -10,6 +10,11 @@ class Device(models.Model):
     port = models.IntegerField(
             verbose_name='Port Number',
             )
+    name = models.CharField(
+            verbose_name='Name',
+            max_length=50,
+            blank=True,
+            )
 
     def send_message(self, msg):
         host = self.ip
