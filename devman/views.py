@@ -27,7 +27,7 @@ def set_secdevice_view(request):
         return HttpResponseBadRequest('Bad status')
     device = get_object_or_404(SecDevice, pk=dev_id)
     device.set_status(status == '1')
-    return render(request, 'devman/toggle_secdevice.html', {'device': device})
+    return devman_home_view(request)
 
 
 @require_http_methods(['GET'])
