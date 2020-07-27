@@ -34,9 +34,10 @@ def set_secdevice_view(request):
 def secdevice_logs_view(request):
     dev_id = request.GET.get('device', -1)
     if dev_id == -1:
-        logs = SecAlarm.objects.all()
+        logs = SecAlarm.objects
     else:
-        logs = SecAlarm.objects.filter(device_id=dev_id).all()
+        logs = SecAlarm.objects.filter(device_id=dev_id)
+    logs = logs.order_by('time').reverse().all()
     return render(request,
             'devman/secdevice_logs.html',
             {'logs': logs},
