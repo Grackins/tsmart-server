@@ -1,6 +1,7 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse, HttpResponseBadRequest
 from django.views.decorators.http import require_http_methods
+from django.contrib import messages
 from datetime import datetime
 
 from .models import SecDevice, SecAlarm, WeatherDevice
@@ -26,8 +27,14 @@ def set_secdevice_view(request):
     if status != '0' and status != '1':
         return HttpResponseBadRequest('Bad status')
     device = get_object_or_404(SecDevice, pk=dev_id)
-    device.set_status(status == '1')
-    return devman_home_view(request)
+    try:
+        device.set_status(status == '1')
+        messages.add_message(request, messages.SUCCESS,
+                'Turned {} successfully. :D'.format('ON' if status == '1' else 'OFF'))
+    except ConnectionRefusedError:
+        messages.add_message(request, messages.ERROR,
+                'Could not change the status of `{}`'.format(device.name))
+    return redirect('/devman')
 
 
 @require_http_methods(['GET'])
