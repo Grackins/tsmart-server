@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseBadRequest
 from django.views.decorators.http import require_http_methods
 from datetime import datetime
 
@@ -9,8 +9,6 @@ from .utils import get_client_ip
 
 def devman_home_view(request):
     weather_devs = WeatherDevice.objects.all()
-    for device in weather_devs:
-        device.update()
     return render(
             request,
             'devman/devman_index.html',
@@ -22,10 +20,13 @@ def devman_home_view(request):
 
 
 @require_http_methods(['GET'])
-def toggle_secdevice_view(request):
+def set_secdevice_view(request):
     dev_id = request.GET.get('device', -1)
+    status = request.GET.get('status', '1')
+    if status != '0' and status != '1':
+        return HttpResponseBadRequest('Bad status')
     device = get_object_or_404(SecDevice, pk=dev_id)
-    device.toggle_status()
+    device.set_status(status == '1')
     return render(request, 'devman/toggle_secdevice.html', {'device': device})
 
 
@@ -42,7 +43,7 @@ def secdevice_logs_view(request):
             )
 
 
-@require_http_methods(['GET'])
+@require_http_methods(['ATGET', 'GET'])
 def secdevice_submit_alarm_view(request):
     alarm = SecAlarm()
     device = None
@@ -60,9 +61,19 @@ def secdevice_submit_alarm_view(request):
 def weather_device_view(request):
     dev_id = request.GET.get('device', -1)
     device = get_object_or_404(WeatherDevice, pk=dev_id)
-    device.update()
     return render(request,
             'devman/weather_device_view.html',
             {'device': device},
             )
+
+
+@require_http_methods(['GET'])
+def weather_device_update_view(request):
+    try:
+        device = WeatherDevice.objects.get(ip=get_client_ip(request))
+        device.humidity, device.temperature = (float(num) for num in request.GET.get('data').split())
+        device.save()
+        return HttpResponse('OK')
+    except Exception():
+        return HttpResponse('NOK')
 

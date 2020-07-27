@@ -29,8 +29,11 @@ class SecDevice(Device):
             )
 
     def toggle_status(self):
-        self.status = not self.status
-        while self.send_message('1' if self.status else '0') != b'OK\n':
+        self.set_status(not self.status)
+
+    def set_status(self, status):
+        self.status = status
+        while self.send_message('1' if self.status else '0') != b'OK':
             time.sleep(1)
         self.save()
 
@@ -49,10 +52,4 @@ class SecAlarm(models.Model):
 class WeatherDevice(Device):
     humidity = models.FloatField()
     temperature = models.FloatField()
-
-    def update(self):
-        info = self.send_message('Get').decode('utf-8').split()
-        self.humidity = float(info[0])
-        self.temperature = float(info[1])
-        self.save()
 
