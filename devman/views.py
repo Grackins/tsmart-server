@@ -60,16 +60,6 @@ def secdevice_submit_alarm_view(request):
 
 
 @require_http_methods(['GET'])
-def weather_device_view(request):
-    dev_id = request.GET.get('device', -1)
-    device = get_object_or_404(WeatherDevice, pk=dev_id)
-    return render(request,
-            'devman/weather_device_view.html',
-            {'device': device},
-            )
-
-
-@require_http_methods(['GET'])
 def weather_device_update_view(request):
     try:
         device = WeatherDevice.objects.get(ip=get_client_ip(request))
