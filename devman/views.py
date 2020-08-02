@@ -2,7 +2,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse, HttpResponseBadRequest
 from django.views.decorators.http import require_http_methods
 from django.contrib import messages
-from datetime import datetime
+from django.utils import timezone
 
 from .models import SecDevice, SecAlarm, WeatherDevice
 from .utils import get_client_ip
@@ -59,7 +59,7 @@ def secdevice_submit_alarm_view(request):
     try:
         device = SecDevice.objects.get(ip=get_client_ip(request))
         alarm.device = device
-        alarm.time = datetime.now()
+        alarm.time = timezone.now()
         alarm.save()
         return HttpResponse('OK')
     except Exception:
