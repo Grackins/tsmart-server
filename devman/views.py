@@ -18,7 +18,6 @@ def home_view(request):
 
 @require_http_methods(['POST'])
 def settings_view(request):
-    print(request.POST)
     dev_id = int(request.POST.get('dev_id', '-1'))
     status = int(request.POST.get('status', '-1'))
     if dev_id == -1 or status not in [0, 1]:
