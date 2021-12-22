@@ -24,4 +24,35 @@
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
   </body>
+  <script type="text/javascript">
+    function change_state(e) {
+      let btn = e.target;
+      let btngrp = btn.parentNode;
+      let dev_id = btngrp.attributes.key.value;
+      let stat = btn.innerText === 'ON' ? 1 : 0;
+
+      xhr = new XMLHttpRequest();
+      xhr.open('POST', 'settings', true);
+      xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+      xhr.onreadystatechange = function() {
+        if (this.readyState === XMLHttpRequest.DONE) {
+          if (this.status == 200) {
+          } else if (this.status == 404) {
+          } else if (this.status == 400) {
+          } else if (this.status == 503) {
+            alert("Connection to relay failed");
+          } else {
+            alert("You shouldn't see this alert! :|");
+          }
+          location.reload();
+        }
+      };
+      xhr.send(`dev_id=${dev_id}&status=${stat}`);
+    }
+    Array.from(document.getElementsByClassName('btn-key')).forEach(
+      (e) => {
+        e.addEventListener('click', change_state);
+      }
+    );
+  </script>
 </html>

@@ -1,0 +1,22 @@
+  <div class="card">
+    <div class="card-body">
+      <h5 class="card-title">
+        {{ dev.name }}
+      </h5>
+      {% if dev.status == 2 %}
+          {% include "devman/icon_disconnected.html" with size=25 %}
+      {% else %}
+          {% include "devman/icon_connected.html" with size=25 %}
+      {% endif %}
+
+      {% if dev.status == 1 %}
+          {% include "devman/icon_light_on.html" with size=25 %}
+      {% else %}
+          {% include "devman/icon_light_off.html" with size=25 %}
+      {% endif %}
+      <div key={{ dev.pk }} class="btn-group float-right" role="group" aria-label="Basic example" >
+        <button class="btn btn-danger btn-key">OFF</button>
+        <button class="btn btn-success btn-key">ON</button>
+      </div>
+    </div>
+  </div>
