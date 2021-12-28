@@ -2,7 +2,7 @@
 
 {% block page_content %}
 
-<div class="col-sm-6">
+<div class="col-sm-4">
   <h2> Relays List </h2>
   <br />
   {% for dev in ldevs %}
@@ -11,7 +11,16 @@
   {% endfor %}
 </div>
 
-<div class="col-sm-6">
+<div class="col-sm-4">
+  <h2> ... </h2>
+  <br />
+  {% for dev in mdevs %}
+    {% include "devman/device_card.html" with dev=dev %}
+    <br />
+  {% endfor %}
+</div>
+
+<div class="col-sm-4">
   <h2> ... </h2>
   <br />
   {% for dev in rdevs %}

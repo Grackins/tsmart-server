@@ -10,8 +10,9 @@ def home_view(request):
         request,
         'devman/devman_index.html',
         {
-            'ldevs': devices[0::2],
-            'rdevs': devices[1::2],
+            'ldevs': devices[0::3],
+            'mdevs': devices[1::3],
+            'rdevs': devices[2::3],
         },
     )
 
